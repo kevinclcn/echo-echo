@@ -1,2 +1,3 @@
 
-address = ":1313"
+[server]
+port = 1313

@@ -66,5 +66,5 @@ func main() {
 		e.Logger.Fatal(err)
 	}
 
-	e.Logger.Fatal(e.Start(conf.Address))
+	e.Logger.Fatal(e.Start(conf.Server.Address()))
 }

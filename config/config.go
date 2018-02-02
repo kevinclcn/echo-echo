@@ -2,6 +2,8 @@ package config
 
 import (
 	"github.com/spf13/viper"
+	"fmt"
+	"strings"
 )
 
 var vip = viper.New()
@@ -12,13 +14,23 @@ func init() {
 	vip.AddConfigPath("./")
 	vip.ReadInConfig()
 	vip.SetEnvPrefix("echo")
-	vip.BindEnv("address")
-	vip.SetDefault("address", ":1213")
+	replacer := strings.NewReplacer(".", "_")
+	vip.SetEnvKeyReplacer(replacer)
+	vip.BindEnv("server.port")
+	vip.SetDefault("server.port", "1213")
 
 }
 
+type server struct {
+	Port int
+}
+
+func (s server)Address() string  {
+	return fmt.Sprintf(":%d", s.Port)
+}
+
 type Config struct {
-	Address string
+	Server server
 }
 
 func LoadConfig() (*Config, error)  {

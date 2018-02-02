@@ -9,7 +9,8 @@ import (
 
 func TestConfigLoader(t *testing.T)  {
 	var tomlExample = []byte(`
-		address = ":1212"
+		[server]
+		port = 1212
 
      `)
 
@@ -17,16 +18,16 @@ func TestConfigLoader(t *testing.T)  {
 
 	c, err := LoadConfig()
 	assert.Nil(t, err, "failed to load config file")
-	assert.Equal(t, ":1212", c.Address, "Address is not equal")
+	assert.Equal(t, ":1212", c.Server.Address(), "Address is not equal")
 
 	vip.ReadConfig(bytes.NewBuffer([]byte(``)))
 }
 
 func TestEnv(t *testing.T)  {
-	os.Setenv("ECHO_ADDRESS", ":1111")
+	os.Setenv("ECHO_SERVER_PORT", "1111")
 	c, err := LoadConfig()
 	assert.Nil(t, err, "failed to load config file")
-	assert.Equal(t, ":1111", c.Address, "Address is not equal")
+	assert.Equal(t, ":1111", c.Server.Address(), "Address is not equal")
 
 	os.Clearenv()
 }
@@ -34,5 +35,5 @@ func TestEnv(t *testing.T)  {
 func TestDefault(t *testing.T) {
 	c, err := LoadConfig()
 	assert.Nil(t, err, "failed to load config file")
-	assert.Equal(t, ":1213", c.Address, "Address is not equal")
+	assert.Equal(t, ":1213", c.Server.Address(), "Address is not equal")
 }
