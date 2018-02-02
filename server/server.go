@@ -1,21 +1,22 @@
-package main
+package server
 
 import (
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/kevinclcn/echo-echo/config"
 	"net/http"
 	"github.com/dgrijalva/jwt-go"
 	"time"
-	"github.com/kevinclcn/echo-echo/config"
+	"github.com/labstack/echo/middleware"
 )
 
+var e *echo.Echo
 
 type User struct {
 	UserName string `json:"username"`
 	Password string `json:"password"`
 }
 
-func main() {
+func Start(config *config.Config)  {
 	e := echo.New()
 	e.Use(middleware.RequestID())
 	e.Use(middleware.Logger())
@@ -31,7 +32,7 @@ func main() {
 		name := claims["name"].(string)
 		return c.String(http.StatusOK, "Welcome " + name+ "!")
 	})
-	
+
 	e.POST("/login", func(c echo.Context) error {
 
 		user := &User{}
@@ -60,11 +61,5 @@ func main() {
 		return echo.ErrUnauthorized
 	})
 
-
-	conf, err := config.LoadConfig()
-	if err != nil {
-		e.Logger.Fatal(err)
-	}
-
-	e.Logger.Fatal(e.Start(conf.Server.Address()))
+	e.Logger.Fatal(e.Start(config.Server.Address()))
 }
