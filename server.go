@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"github.com/dgrijalva/jwt-go"
 	"time"
+	"github.com/kevinclcn/echo-echo/config"
 )
 
 
@@ -60,6 +61,10 @@ func main() {
 	})
 
 
+	conf, err := config.LoadConfig()
+	if err != nil {
+		e.Logger.Fatal(err)
+	}
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(conf.Address))
 }
