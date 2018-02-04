@@ -39,7 +39,7 @@
   branch = "master"
   name = "github.com/kevinclcn/log4e"
   packages = ["."]
-  revision = "390986d360854672ea592d77a49ed63d16a1e3fc"
+  revision = "5964d09f1c4b1938d442d95be886741399539d7b"
 
 [[projects]]
   name = "github.com/labstack/echo"
